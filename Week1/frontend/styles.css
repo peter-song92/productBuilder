@@ -95,6 +95,38 @@ body::after{
   animation:fadeUp 0.8s ease;
 }
 
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.nav a{
+  text-decoration:none;
+  color:var(--muted);
+  font-size:13px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid transparent;
+}
+
+.nav a.active,
+.nav a:hover{
+  color:var(--text);
+  border-color:var(--line);
+  background:var(--chip);
+}
+
 .hero{
   display:flex;
   align-items:center;
@@ -359,6 +391,58 @@ input:disabled{
   white-space:nowrap;
 }
 
+.content{
+  margin-top:14px;
+}
+
+.content h2{
+  font-size:18px;
+  margin:18px 0 8px;
+}
+
+.content p,
+.content li{
+  font-size:14px;
+  line-height:1.6;
+  color:var(--text);
+}
+
+.content ul{
+  padding-left:18px;
+}
+
+.guide-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:14px;
+  margin-top:12px;
+}
+
+.guide-card{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:16px;
+  padding:14px;
+}
+
+.guide-card h3{
+  margin:0 0 6px;
+  font-size:15px;
+}
+
+.guide-card p{
+  margin:0 0 10px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.guide-card a{
+  font-size:12px;
+  color:var(--text);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+}
+
 
 footer{
   text-align:center;
@@ -367,9 +451,16 @@ footer{
   color:var(--muted);
 }
 
+footer a{
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+}
+
 @media (max-width: 900px){
   .hero{ flex-direction:column; align-items:flex-start; }
   .panel-grid{ grid-template-columns:1fr; }
+  .guide-grid{ grid-template-columns:1fr; }
 }
 
 @media (max-width: 520px){
@@ -384,6 +475,7 @@ footer{
   .tip-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   .panel-sub, .hint, .taxNote{ font-size:11px; }
   footer{ display:none; }
+  .nav a{ font-size:12px; padding:4px 8px; }
 }
 
 @keyframes fadeUp{

@@ -18,105 +18,109 @@
       <button class="theme-toggle" id="themeToggle" type="button">Dark mode</button>
     </header>
 
-    <main class="grid">
+    <main>
       <section class="card panel">
         <div class="panel-head">
-          <h2>Bill basics</h2>
-          <p class="panel-sub">Tips are based on pre-tax amount.</p>
+          <h2>Bill + Tip board</h2>
         </div>
 
-        <div class="block">
-          <label for="amount">Bill amount ($)</label>
-          <input
-            id="amount"
-            type="number"
-            inputmode="decimal"
-            min="0"
-            step="0.01"
-            placeholder="Enter amount"
-            autocorrect="off"
-            autocomplete="off"
-            autocapitalize="off"
-          />
-        </div>
+        <div class="panel-grid">
+          <div>
+            <div class="block">
+              <label for="amount">Bill amount ($)</label>
+              <input
+                id="amount"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="0.01"
+                placeholder="Enter amount"
+                autocorrect="off"
+                autocomplete="off"
+                autocapitalize="off"
+              />
+            </div>
 
-        <div class="block">
-          <label>Amount type</label>
-          <div class="toggle" role="group" aria-label="Amount type">
-            <button id="beforeBtn" class="active" aria-pressed="true" type="button">Before Tax</button>
-            <button id="afterBtn" aria-pressed="false" type="button">After Tax</button>
-          </div>
-          <div class="hint">After-tax reverses the tax to find pre-tax.</div>
-        </div>
+            <div class="block">
+              <label>Amount type</label>
+              <div class="toggle" role="group" aria-label="Amount type">
+                <button id="beforeBtn" class="active" aria-pressed="true" type="button">Before Tax</button>
+                <button id="afterBtn" aria-pressed="false" type="button">After Tax</button>
+              </div>
+              <div class="hint">After-tax reverses tax to find pre-tax.</div>
+            </div>
 
-        <div class="block row">
-          <div class="col">
-            <label for="city">Location</label>
-            <select id="city">
-              <option value="NYC" data-tax="8.875">New York City</option>
-              <option value="CUSTOM">Custom</option>
-            </select>
-          </div>
-          <div class="col">
-            <label for="tax">Tax rate (%)</label>
-            <input
-              id="tax"
-              type="number"
-              inputmode="decimal"
-              min="0"
-              step="0.001"
-              value="8.875"
-              autocorrect="off"
-              autocomplete="off"
-              autocapitalize="off"
-            />
-            <div class="taxNote" id="taxNote">NYC tax rate: 8.875%</div>
-            <div class="hint" id="taxHint">Location presets lock the tax rate; choose Custom to edit.</div>
-          </div>
-        </div>
+            <div class="block row">
+              <div class="col">
+                <label for="city">Location</label>
+                <select id="city">
+                  <option value="NYC" data-tax="8.875">New York City</option>
+                  <option value="BROOKLYN" data-tax="8.875">Brooklyn (Kings County)</option>
+                  <option value="HACKENSACK" data-tax="6.625">Hackensack, NJ (Bergen)</option>
+                  <option value="FORTLEE" data-tax="6.625">Fort Lee, NJ (Bergen)</option>
+                  <option value="PARAMUS" data-tax="6.625">Paramus, NJ (Bergen)</option>
+                  <option value="RIDGEWOOD" data-tax="6.625">Ridgewood, NJ (Bergen)</option>
+                  <option value="ENGLEWOOD" data-tax="6.625">Englewood, NJ (Bergen)</option>
+                  <option value="TEANECK" data-tax="6.625">Teaneck, NJ (Bergen)</option>
+                  <option value="CUSTOM">Custom</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="tax">Tax rate (%)</label>
+                <input
+                  id="tax"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="0.001"
+                  value="8.875"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                />
+                <div class="taxNote" id="taxNote">NYC tax rate: 8.875%</div>
+              </div>
+            </div>
 
-        <div class="block">
-          <label for="customTip">Custom tip (%)</label>
-          <input
-            id="customTip"
-            type="number"
-            inputmode="decimal"
-            min="0"
-            step="0.01"
-            placeholder="Optional"
-            autocorrect="off"
-            autocomplete="off"
-            autocapitalize="off"
-          />
-          <div class="hint">Add any custom percent to see it on the tip board.</div>
-        </div>
+            <div class="block">
+              <label for="customTip">Custom tip (%)</label>
+              <input
+                id="customTip"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="0.01"
+                placeholder="Optional"
+                autocorrect="off"
+                autocomplete="off"
+                autocapitalize="off"
+              />
+            </div>
 
-        <div class="error" id="error" role="alert" aria-live="polite"></div>
-      </section>
+            <div class="error" id="error" role="alert" aria-live="polite"></div>
+          </div>
 
-      <section class="card panel">
-        <div class="panel-head">
-          <h2>Tip board</h2>
-          <p class="panel-sub">Tap a card to lock the total.</p>
-        </div>
-        <div class="tip-grid" id="tipGrid"></div>
+          <div>
+            <div class="tip-grid" id="tipGrid"></div>
 
-        <div class="summary">
-          <div class="summary-row">
-            <span>Subtotal (pre-tax)</span>
-            <strong id="subtotal">—</strong>
-          </div>
-          <div class="summary-row">
-            <span>Tax</span>
-            <strong id="taxAmount">—</strong>
-          </div>
-          <div class="summary-row">
-            <span>Selected tip</span>
-            <strong id="tipAmount">—</strong>
-          </div>
-          <div class="summary-total">
-            <span>Total</span>
-            <strong id="grandTotal">—</strong>
+            <div class="summary">
+              <div class="summary-row">
+                <span>Subtotal (pre-tax)</span>
+                <strong id="subtotal">—</strong>
+              </div>
+              <div class="summary-row">
+                <span>Tax</span>
+                <strong id="taxAmount">—</strong>
+              </div>
+              <div class="summary-row">
+                <span>Selected tip</span>
+                <strong id="tipAmount">—</strong>
+              </div>
+              <div class="summary-total">
+                <span>Total</span>
+                <strong id="grandTotal">—</strong>
+              </div>
+            </div>
           </div>
         </div>
       </section>

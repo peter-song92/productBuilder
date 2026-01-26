@@ -66,6 +66,9 @@ function buildTips(){
   const customRaw = parseNumber(customTipInput.value);
   if (!isNaN(customRaw) && customRaw > 0){
     const customTip = customRaw / 100;
+    const highest = Math.max(...tips);
+    const highestIndex = tips.indexOf(highest);
+    if (highestIndex >= 0) tips.splice(highestIndex, 1);
     if (!tips.some(t => Math.abs(t - customTip) < 0.0001)){
       tips.push(customTip);
     }
@@ -93,6 +96,9 @@ function renderTips(beforeTax, baseTotal, tips){
     card.className = "tip-card" + (t === selectedTip ? " active" : "");
     card.setAttribute("data-tip", String(t));
 
+    const left = document.createElement("div");
+    left.className = "tip-main";
+
     const pct = document.createElement("div");
     pct.className = "tip-pct";
     pct.textContent = `${Math.round(t * 100)}%`;
@@ -101,13 +107,25 @@ function renderTips(beforeTax, baseTotal, tips){
     amt.className = "tip-amt";
     amt.textContent = tipAmount == null ? "—" : money(tipAmount);
 
+    left.appendChild(pct);
+    left.appendChild(amt);
+
+    const right = document.createElement("div");
+    right.className = "tip-side";
+
     const totalEl = document.createElement("div");
     totalEl.className = "tip-total";
-    totalEl.textContent = total == null ? "Total —" : `Total ${money(total)}`;
+    totalEl.textContent = "Total";
 
-    card.appendChild(pct);
-    card.appendChild(amt);
-    card.appendChild(totalEl);
+    const totalValue = document.createElement("div");
+    totalValue.className = "tip-amt";
+    totalValue.textContent = total == null ? "—" : money(total);
+
+    right.appendChild(totalEl);
+    right.appendChild(totalValue);
+
+    card.appendChild(left);
+    card.appendChild(right);
 
     card.addEventListener("click", () => {
       selectedTip = t;

@@ -16,6 +16,7 @@ const taxAmountEl = document.getElementById("taxAmount");
 const tipAmountEl = document.getElementById("tipAmount");
 const grandTotalEl = document.getElementById("grandTotal");
 const themeToggle = document.getElementById("themeToggle");
+const darkVariant = document.getElementById("darkVariant");
 
 beforeBtn.onclick = () => setMode("BEFORE");
 afterBtn.onclick = () => setMode("AFTER");
@@ -215,21 +216,37 @@ function setTheme(theme){
   themeToggle.textContent = theme === "dark" ? "Light mode" : "Dark mode";
 }
 
+function setDarkVariant(value){
+  const variant = value || "C";
+  document.documentElement.setAttribute("data-dark", variant);
+  document.body.setAttribute("data-dark", variant);
+  localStorage.setItem("darkVariant", variant);
+  if (darkVariant) darkVariant.value = variant;
+}
+
 function initTheme(){
   const saved = localStorage.getItem("theme");
   if (saved === "light" || saved === "dark"){
     setTheme(saved);
-    return;
+  } else {
+    const prefersDark = window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setTheme(prefersDark ? "dark" : "light");
   }
-  const prefersDark = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-  setTheme(prefersDark ? "dark" : "light");
+  const savedVariant = localStorage.getItem("darkVariant") || "B";
+  setDarkVariant(savedVariant);
 }
 
 themeToggle.addEventListener("click", () => {
   const current = document.documentElement.getAttribute("data-theme") || "light";
   setTheme(current === "dark" ? "light" : "dark");
 });
+
+if (darkVariant){
+  darkVariant.addEventListener("change", () => {
+    setDarkVariant(darkVariant.value);
+  });
+}
 
 updateTaxFromCity();
 setMode("BEFORE");

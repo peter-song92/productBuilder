@@ -118,7 +118,7 @@ function renderTips(beforeTax, baseTotal, tips){
     totalEl.textContent = "Total";
 
     const totalValue = document.createElement("div");
-    totalValue.className = "tip-amt";
+    totalValue.className = "tip-total-value";
     totalValue.textContent = total == null ? "—" : money(total);
 
     right.appendChild(totalEl);

@@ -359,20 +359,6 @@ input:disabled{
   white-space:nowrap;
 }
 
-.theme-controls{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.theme-select{
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--text);
-  border-radius:999px;
-  padding:6px 10px;
-  font-size:12px;
-}
 
 footer{
   text-align:center;

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Tip Calculator</title>
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#0a0a0a;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --accent:#111827;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:520px;
+      margin:0 auto;
+      padding:24px 16px 40px;
+    }
+
+    h1{
+      font-size:22px;
+      margin:0 0 6px;
+      font-weight:700;
+    }
+
+    .sub{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:22px;
+      line-height:1.45;
+    }
+
+    .block{ margin-bottom:20px; }
+
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    input, select{
+      width:100%;
+      padding:12px;
+      font-size:15px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+    }
+
+    input:focus, select:focus{
+      outline:none;
+      border-color:var(--accent);
+    }
+
+    .toggle{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      border:1px solid var(--line);
+      border-radius:12px;
+      overflow:hidden;
+    }
+
+    .toggle button{
+      padding:12px 10px;
+      font-size:13px;
+      background:#fff;
+      border:0;
+      cursor:pointer;
+    }
+
+    .toggle button.active{
+      background:var(--accent);
+      color:#fff;
+    }
+
+    .taxNote{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .btn{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:0;
+      background:var(--accent);
+      color:#fff;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:22px;
+    }
+
+    th, td{
+      padding:10px 4px;
+      font-size:14px;
+      text-align:right;
+      border-bottom:1px solid var(--line);
+    }
+
+    th:first-child, td:first-child{
+      text-align:left;
+    }
+
+    tfoot td{
+      font-weight:600;
+    }
+
+    footer{
+      text-align:center;
+      margin-top:30px;
+      font-size:12px;
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>Tip Calculator</h1>
+
+    <div class="sub">
+      Default: NYC · Tips are always calculated from the <b>before-tax</b> amount.
+      If you choose <b>after-tax</b>, the app reverses the tax to find the before-tax total.
+    </div>
+
+    <!-- Location -->
+    <div class="block">
+      <label>Location</label>
+      <select id="city">
+        <option value="NYC">New York City</option>
+        <option value="CUSTOM">Custom</option>
+      </select>
+    </div>
+
+    <!-- Amount -->
+    <div class="block">
+      <label>Amount ($)</label>
+      <input
+        id="amount"
+        type="text"
+        inputmode="decimal"
+        pattern="[0-9]*"
+        placeholder="Enter Amount ($)"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+      />
+    </div>
+
+    <!-- Amount type -->
+    <div class="block">
+      <label>Amount type</label>
+      <div class="toggle">
+        <button id="beforeBtn" class="active">Before Tax</button>
+        <button id="afterBtn">After Tax</button>
+      </div>
+    </div>
+s
+    <!-- Tax -->
+    <div class="block">
+      <label>Tax rate (%)</label>
+      <input
+        id="tax"
+        type="text"
+        inputmode="decimal"
+        pattern="[0-9]*"
+        value="8.875"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+      />
+      <div class="taxNote" id="taxNote">Auto-filled for NYC</div>
+    </div>
+
+    <button class="btn" onclick="calculate()">Calculate</button>
+
+    <!-- Results -->
+    <table id="table" style="display:none;">
+      <thead>
+        <tr>
+          <th>Tip</th>
+          <th>Tip amount</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+      <tfoot>
+        <tr>
+          <td>No tip</td>
+          <td>$0.00</td>
+          <td id="noTipTotal"></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <footer>
+      ❤️ ❤️ ❤️<br/>
+      ily — insung
+    </footer>
+  </div>
+
+  <script>
+    let mode = "BEFORE"; // BEFORE = before tax, AFTER = after tax
+    const tips = [0.15, 0.18, 0.20, 0.22];
+
+    const beforeBtn = document.getElementById("beforeBtn");
+    const afterBtn = document.getElementById("afterBtn");
+
+    beforeBtn.onclick = () => setMode("BEFORE");
+    afterBtn.onclick = () => setMode("AFTER");
+
+    function setMode(m){
+      mode = m;
+      beforeBtn.classList.toggle("active", m === "BEFORE");
+      afterBtn.classList.toggle("active", m === "AFTER");
+    }
+
+    function money(n){
+      return "$" + n.toFixed(2);
+    }
+
+    function calculate(){
+      const amount = parseFloat(document.getElementById("amount").value);
+      const taxRate = parseFloat(document.getElementById("tax").value) / 100;
+
+      if (isNaN(amount) || isNaN(taxRate)) return;
+
+      const beforeTax =
+        mode === "BEFORE"
+          ? amount
+          : amount / (1 + taxRate);
+
+      const tax = beforeTax * taxRate;
+      const baseTotal = beforeTax + tax;
+
+      const rows = document.getElementById("rows");
+      rows.innerHTML = "";
+
+      tips.forEach(t => {
+        const tipAmount = beforeTax * t;
+        const total = baseTotal + tipAmount;
+
+        rows.innerHTML += `
+          <tr>
+            <td>${Math.round(t * 100)}%</td>
+            <td>${money(tipAmount)}</td>
+            <td>${money(total)}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById("noTipTotal").textContent = money(baseTotal);
+      document.getElementById("table").style.display = "table";
+    }
+  </script>
+</body>
+</html>

@@ -210,6 +210,7 @@ citySelect.addEventListener("change", () => {
 
 function setTheme(theme){
   document.documentElement.setAttribute("data-theme", theme);
+  document.body.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
   themeToggle.textContent = theme === "dark" ? "Light mode" : "Dark mode";
 }

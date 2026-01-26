@@ -38,6 +38,7 @@ body{
   min-height:100vh;
   position:relative;
   overflow-x:hidden;
+  transition:background-color 0.25s ease, color 0.25s ease;
 }
 
 body::before,
@@ -67,7 +68,7 @@ body::after{
 .page{
   max-width:1050px;
   margin:0 auto;
-  padding:28px 20px 40px;
+  padding:24px 18px 32px;
   animation:fadeUp 0.8s ease;
 }
 
@@ -89,8 +90,8 @@ body::after{
 
 h1{
   font-family:"Fraunces", serif;
-  font-size:34px;
-  margin:8px 0 8px;
+  font-size:30px;
+  margin:6px 0 6px;
 }
 
 .sub{
@@ -109,8 +110,9 @@ h1{
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:20px;
-  padding:22px;
+  padding:20px;
   box-shadow:var(--shadow);
+  transition:background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .panel-head{
@@ -145,6 +147,7 @@ input, select{
   border-radius:12px;
   background:var(--panel);
   color:var(--text);
+  transition:background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 input:focus, select:focus{
@@ -273,6 +276,7 @@ input:disabled{
   justify-content:space-between;
   font-size:16px;
   font-weight:600;
+  transition:background-color 0.25s ease;
 }
 
 .theme-toggle{
@@ -299,8 +303,14 @@ footer{
 
 @media (max-width: 520px){
   .row{ flex-direction:column; }
-  h1{ font-size:28px; }
-  .tip-grid{ grid-template-columns:1fr; }
+  .page{ padding:16px 14px 22px; }
+  h1{ font-size:24px; }
+  .sub{ font-size:13px; }
+  .card{ padding:16px; }
+  .block{ margin-bottom:12px; }
+  .tip-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .panel-sub, .hint, .taxNote{ font-size:11px; }
+  footer{ display:none; }
 }
 
 @keyframes fadeUp{

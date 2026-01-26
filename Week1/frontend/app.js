@@ -191,7 +191,7 @@ citySelect.addEventListener("change", () => {
 });
 
 function setTheme(theme){
-  document.body.setAttribute("data-theme", theme);
+  document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
   themeToggle.textContent = theme === "dark" ? "Light mode" : "Dark mode";
 }
@@ -208,7 +208,7 @@ function initTheme(){
 }
 
 themeToggle.addEventListener("click", () => {
-  const current = document.body.getAttribute("data-theme") || "light";
+  const current = document.documentElement.getAttribute("data-theme") || "light";
   setTheme(current === "dark" ? "light" : "dark");
 });
 

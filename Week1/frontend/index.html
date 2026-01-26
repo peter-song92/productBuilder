@@ -4,274 +4,129 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Tip Calculator</title>
-
-  <style>
-    :root{
-      --bg:#ffffff;
-      --text:#0a0a0a;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --accent:#111827;
-    }
-
-    *{ box-sizing:border-box; }
-
-    body{
-      margin:0;
-      font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
-
-    .wrap{
-      max-width:520px;
-      margin:0 auto;
-      padding:24px 16px 40px;
-    }
-
-    h1{
-      font-size:22px;
-      margin:0 0 6px;
-      font-weight:700;
-    }
-
-    .sub{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:22px;
-      line-height:1.45;
-    }
-
-    .block{ margin-bottom:20px; }
-
-    label{
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-
-    input, select{
-      width:100%;
-      padding:12px;
-      font-size:15px;
-      border:1px solid var(--line);
-      border-radius:10px;
-      background:#fff;
-    }
-
-    input:focus, select:focus{
-      outline:none;
-      border-color:var(--accent);
-    }
-
-    .toggle{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      border:1px solid var(--line);
-      border-radius:12px;
-      overflow:hidden;
-    }
-
-    .toggle button{
-      padding:12px 10px;
-      font-size:13px;
-      background:#fff;
-      border:0;
-      cursor:pointer;
-    }
-
-    .toggle button.active{
-      background:var(--accent);
-      color:#fff;
-    }
-
-    .taxNote{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:6px;
-    }
-
-    .btn{
-      width:100%;
-      padding:14px;
-      border-radius:12px;
-      border:0;
-      background:var(--accent);
-      color:#fff;
-      font-size:15px;
-      font-weight:600;
-      cursor:pointer;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:22px;
-    }
-
-    th, td{
-      padding:10px 4px;
-      font-size:14px;
-      text-align:right;
-      border-bottom:1px solid var(--line);
-    }
-
-    th:first-child, td:first-child{
-      text-align:left;
-    }
-
-    tfoot td{
-      font-weight:600;
-    }
-
-    footer{
-      text-align:center;
-      margin-top:30px;
-      font-size:12px;
-      color:var(--muted);
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 
 <body>
-  <div class="wrap">
-    <h1>Tip Calculator</h1>
-
-    <div class="sub">
-      Default: NYC · Tips are always calculated from the <b>before-tax</b> amount.
-      If you choose <b>after-tax</b>, the app reverses the tax to find the before-tax total.
-    </div>
-
-    <!-- Location -->
-    <div class="block">
-      <label>Location</label>
-      <select id="city">
-        <option value="NYC">New York City</option>
-        <option value="CUSTOM">Custom</option>
-      </select>
-    </div>
-
-    <!-- Amount -->
-    <div class="block">
-      <label>Amount ($)</label>
-      <input
-        id="amount"
-        type="text"
-        inputmode="decimal"
-        pattern="[0-9]*"
-        placeholder="Enter Amount ($)"
-        autocorrect="off"
-        autocomplete="off"
-        autocapitalize="off"
-      />
-    </div>
-
-    <!-- Amount type -->
-    <div class="block">
-      <label>Amount type</label>
-      <div class="toggle">
-        <button id="beforeBtn" class="active">Before Tax</button>
-        <button id="afterBtn">After Tax</button>
+  <div class="page">
+    <header class="hero">
+      <div>
+        <div class="brand">TipForge</div>
+        <h1>Make tipping feel effortless.</h1>
+        <p class="sub">Enter your bill, pick before/after tax, and see smart totals instantly.</p>
       </div>
-    </div>
-s
-    <!-- Tax -->
-    <div class="block">
-      <label>Tax rate (%)</label>
-      <input
-        id="tax"
-        type="text"
-        inputmode="decimal"
-        pattern="[0-9]*"
-        value="8.875"
-        autocorrect="off"
-        autocomplete="off"
-        autocapitalize="off"
-      />
-      <div class="taxNote" id="taxNote">Auto-filled for NYC</div>
-    </div>
+      <button class="theme-toggle" id="themeToggle" type="button">Dark mode</button>
+    </header>
 
-    <button class="btn" onclick="calculate()">Calculate</button>
+    <main class="grid">
+      <section class="card panel">
+        <div class="panel-head">
+          <h2>Bill basics</h2>
+          <p class="panel-sub">Tips are calculated from the pre-tax amount.</p>
+        </div>
 
-    <!-- Results -->
-    <table id="table" style="display:none;">
-      <thead>
-        <tr>
-          <th>Tip</th>
-          <th>Tip amount</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody id="rows"></tbody>
-      <tfoot>
-        <tr>
-          <td>No tip</td>
-          <td>$0.00</td>
-          <td id="noTipTotal"></td>
-        </tr>
-      </tfoot>
-    </table>
+        <div class="block">
+          <label for="amount">Bill amount ($)</label>
+          <input
+            id="amount"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            placeholder="Enter amount"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+          />
+        </div>
+
+        <div class="block">
+          <label>Amount type</label>
+          <div class="toggle" role="group" aria-label="Amount type">
+            <button id="beforeBtn" class="active" aria-pressed="true" type="button">Before Tax</button>
+            <button id="afterBtn" aria-pressed="false" type="button">After Tax</button>
+          </div>
+          <div class="hint">If you choose after-tax, we reverse the tax to find pre-tax.</div>
+        </div>
+
+        <div class="block row">
+          <div class="col">
+            <label for="city">Location</label>
+            <select id="city">
+              <option value="NYC" data-tax="8.875">New York City</option>
+              <option value="CUSTOM">Custom</option>
+            </select>
+          </div>
+          <div class="col">
+            <label for="tax">Tax rate (%)</label>
+            <input
+              id="tax"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="0.001"
+              value="8.875"
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"
+            />
+            <div class="taxNote" id="taxNote">NYC tax rate: 8.875%</div>
+            <div class="hint" id="taxHint">Location presets lock the tax rate; choose Custom to edit.</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <label for="customTip">Custom tip (%)</label>
+          <input
+            id="customTip"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            placeholder="Optional"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+          />
+          <div class="hint">Add any custom percent to see it on the tip board.</div>
+        </div>
+
+        <div class="error" id="error" role="alert" aria-live="polite"></div>
+      </section>
+
+      <section class="card panel">
+        <div class="panel-head">
+          <h2>Tip board</h2>
+          <p class="panel-sub">Tap a card to lock the total.</p>
+        </div>
+        <div class="tip-grid" id="tipGrid"></div>
+
+        <div class="summary">
+          <div class="summary-row">
+            <span>Subtotal (pre-tax)</span>
+            <strong id="subtotal">—</strong>
+          </div>
+          <div class="summary-row">
+            <span>Tax</span>
+            <strong id="taxAmount">—</strong>
+          </div>
+          <div class="summary-row">
+            <span>Selected tip</span>
+            <strong id="tipAmount">—</strong>
+          </div>
+          <div class="summary-total">
+            <span>Total</span>
+            <strong id="grandTotal">—</strong>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <footer>
-      ❤️ ❤️ ❤️<br/>
-      ily — insung
+      Built with care · TipForge
     </footer>
   </div>
 
-  <script>
-    let mode = "BEFORE"; // BEFORE = before tax, AFTER = after tax
-    const tips = [0.15, 0.18, 0.20, 0.22];
-
-    const beforeBtn = document.getElementById("beforeBtn");
-    const afterBtn = document.getElementById("afterBtn");
-
-    beforeBtn.onclick = () => setMode("BEFORE");
-    afterBtn.onclick = () => setMode("AFTER");
-
-    function setMode(m){
-      mode = m;
-      beforeBtn.classList.toggle("active", m === "BEFORE");
-      afterBtn.classList.toggle("active", m === "AFTER");
-    }
-
-    function money(n){
-      return "$" + n.toFixed(2);
-    }
-
-    function calculate(){
-      const amount = parseFloat(document.getElementById("amount").value);
-      const taxRate = parseFloat(document.getElementById("tax").value) / 100;
-
-      if (isNaN(amount) || isNaN(taxRate)) return;
-
-      const beforeTax =
-        mode === "BEFORE"
-          ? amount
-          : amount / (1 + taxRate);
-
-      const tax = beforeTax * taxRate;
-      const baseTotal = beforeTax + tax;
-
-      const rows = document.getElementById("rows");
-      rows.innerHTML = "";
-
-      tips.forEach(t => {
-        const tipAmount = beforeTax * t;
-        const total = baseTotal + tipAmount;
-
-        rows.innerHTML += `
-          <tr>
-            <td>${Math.round(t * 100)}%</td>
-            <td>${money(tipAmount)}</td>
-            <td>${money(total)}</td>
-          </tr>
-        `;
-      });
-
-      document.getElementById("noTipTotal").textContent = money(baseTotal);
-      document.getElementById("table").style.display = "table";
-    }
-  </script>
+  <script src="app.js" defer></script>
 </body>
 </html>

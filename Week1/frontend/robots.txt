@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tip-calc.com/sitemap.xml

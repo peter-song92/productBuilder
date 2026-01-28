@@ -3,3 +3,8 @@
 
 # Screenshots
 *.png
+
+# Allow favicons
+!favicon-*.png
+!apple-touch-icon.png
+!favicon-source.png
